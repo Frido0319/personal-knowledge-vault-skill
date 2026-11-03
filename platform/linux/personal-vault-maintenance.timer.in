@@ -1,0 +1,12 @@
+[Unit]
+Description=Run Personal Knowledge Vault maintenance daily
+
+[Timer]
+OnCalendar=*-*-* @HOUR@:@MINUTE@:00
+Persistent=true
+RandomizedDelaySec=10m
+Unit=personal-vault-maintenance.service
+
+[Install]
+WantedBy=timers.target
+

@@ -1,0 +1,17 @@
+[Unit]
+Description=Personal Knowledge Vault deterministic maintenance
+After=local-fs.target
+
+[Service]
+Type=oneshot
+ExecStart="@PYTHON@" -m personal_vault.cli update --config "@CONFIG@" --apply
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectControlGroups=true
+ProtectKernelModules=true
+ProtectKernelTunables=true
+RestrictSUIDSGID=true
+
+[Install]
+WantedBy=default.target
+

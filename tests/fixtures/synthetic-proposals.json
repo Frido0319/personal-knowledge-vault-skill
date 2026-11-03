@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "proposals": [
+    {
+      "id": "local-first-rule",
+      "title": "本地优先更新规则",
+      "summary": "每日更新使用确定性流程，语义提炼需要人工审核。",
+      "body": "先执行 preview，再 apply。AI 生成内容必须进入 staging，不能静默覆盖正式知识。联系邮箱 owner@example.com。",
+      "knowledge_type": "procedure",
+      "target": "knowledge",
+      "source_refs": [
+        {"source_id": "agent-history", "record_id": "session-001#message-8"}
+      ],
+      "confidence": 0.94,
+      "sensitivity": "private"
+    }
+  ]
+}
+

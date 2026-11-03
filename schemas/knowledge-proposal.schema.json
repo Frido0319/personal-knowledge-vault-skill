@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Frido0319/personal-knowledge-vault-skill/schemas/knowledge-proposal.schema.json",
+  "title": "Personal Knowledge Vault proposal batch",
+  "type": "object",
+  "required": ["schema_version", "proposals"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": 1},
+    "proposals": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "title", "summary", "body", "knowledge_type", "target", "source_refs", "confidence", "sensitivity"],
+        "properties": {
+          "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,62}$"},
+          "title": {"type": "string", "minLength": 1, "maxLength": 160},
+          "summary": {"type": "string", "minLength": 1, "maxLength": 1000},
+          "body": {"type": "string", "minLength": 1, "maxLength": 50000},
+          "knowledge_type": {"enum": ["concept", "decision", "procedure", "lesson", "synthesis"]},
+          "target": {"enum": ["knowledge", "synthesis"]},
+          "source_refs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["source_id", "record_id"],
+              "properties": {
+                "source_id": {"type": "string"},
+                "record_id": {"type": "string", "minLength": 1, "maxLength": 256}
+              }
+            }
+          },
+          "confidence": {"type": "number", "minimum": 0, "maximum": 1},
+          "sensitivity": {"enum": ["normal", "private", "restricted"]}
+        }
+      }
+    }
+  }
+}
+

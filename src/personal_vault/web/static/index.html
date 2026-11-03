@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>个人知识库</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="product-label">PERSONAL KNOWLEDGE VAULT</p>
+      <h1 id="product-title">个人知识库</h1>
+    </div>
+    <div class="topbar-status">
+      <span id="health-dot" class="health-dot" aria-hidden="true"></span>
+      <span id="health-label">正在读取</span>
+      <button id="refresh" class="button button-secondary" type="button">刷新</button>
+    </div>
+  </header>
+
+  <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+
+  <div class="workspace">
+    <nav class="sidebar" aria-label="主导航">
+      <button class="nav-button active" type="button" data-panel="overview">总览</button>
+      <button class="nav-button" type="button" data-panel="sources">来源</button>
+      <button class="nav-button" type="button" data-panel="review">审核</button>
+      <button class="nav-button" type="button" data-panel="search">搜索</button>
+      <button class="nav-button" type="button" data-panel="maintenance">维护</button>
+    </nav>
+
+    <main class="main">
+      <section id="panel-overview" class="panel active" aria-labelledby="overview-title">
+        <div class="section-heading">
+          <h2 id="overview-title">知识总览</h2>
+          <span id="vault-path" class="muted path-text"></span>
+        </div>
+        <div class="metrics" aria-label="知识库指标">
+          <div class="metric"><span id="formal-pages" class="metric-value">0</span><span class="metric-label">正式知识</span></div>
+          <div class="metric"><span id="source-count" class="metric-value">0/0</span><span class="metric-label">授权来源</span></div>
+          <div class="metric"><span id="pending-count" class="metric-value">0</span><span class="metric-label">待审核</span></div>
+          <div class="metric"><span id="github-visibility" class="metric-value compact">未验证</span><span class="metric-label">GitHub</span></div>
+        </div>
+        <div class="overview-grid">
+          <section class="data-block">
+            <h3>知识层级</h3>
+            <div id="level-bars" class="level-bars"></div>
+          </section>
+          <section class="data-block">
+            <h3>保护状态</h3>
+            <dl class="status-list">
+              <div><dt>QMD 索引</dt><dd id="qmd-status">未启用</dd></div>
+              <div><dt>Restic 备份</dt><dd id="backup-status">未启用</dd></div>
+              <div><dt>原始证据</dt><dd id="raw-pages">0 页</dd></div>
+            </dl>
+          </section>
+        </div>
+      </section>
+
+      <section id="panel-sources" class="panel" aria-labelledby="sources-title">
+        <div class="section-heading"><h2 id="sources-title">授权来源</h2><span id="source-summary" class="muted"></span></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>ID</th><th>类型</th><th>路径</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody id="source-rows"></tbody>
+          </table>
+        </div>
+        <form id="source-form" class="inline-form">
+          <label>来源 ID<input id="source-id" name="id" required pattern="[a-z0-9_-]+"></label>
+          <label>类型<select id="source-kind" name="kind"><option value="project">项目</option><option value="learning">学习</option><option value="documents">文档</option><option value="skill">Skill</option><option value="agent_history">AI 历史</option><option value="weflow">微信导出</option><option value="qq">QQ 导出</option></select></label>
+          <label class="path-field">本机路径<input id="source-path" name="path" required></label>
+          <button class="button button-primary" type="submit">添加</button>
+        </form>
+      </section>
+
+      <section id="panel-review" class="panel" aria-labelledby="review-title">
+        <div class="section-heading"><h2 id="review-title">知识审核</h2><span id="review-summary" class="muted"></span></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>标题</th><th>类型</th><th>置信度</th><th>目标</th><th>状态</th><th>操作</th></tr></thead>
+            <tbody id="proposal-rows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="panel-search" class="panel" aria-labelledby="search-title">
+        <div class="section-heading"><h2 id="search-title">知识搜索</h2><span id="search-count" class="muted"></span></div>
+        <form id="search-form" class="search-form">
+          <label class="sr-only" for="search-query">搜索知识</label>
+          <input id="search-query" type="search" maxlength="500" placeholder="输入关键词" autocomplete="off">
+          <button class="button button-primary" type="submit">搜索</button>
+        </form>
+        <div id="search-results" class="search-results"></div>
+      </section>
+
+      <section id="panel-maintenance" class="panel" aria-labelledby="maintenance-title">
+        <div class="section-heading"><h2 id="maintenance-title">系统维护</h2><span class="muted">本机</span></div>
+        <div class="action-list">
+          <div class="action-row"><div><strong>知识更新</strong><span>等待操作</span></div><div><button class="button button-secondary action" data-action="update" data-mode="preview">预览</button><button class="button button-primary action" data-action="update" data-mode="apply">执行</button></div></div>
+          <div class="action-row"><div><strong>Skill 目录</strong><span>等待操作</span></div><div><button class="button button-secondary action" data-action="skill-catalog" data-mode="preview">预览</button><button class="button button-primary action" data-action="skill-catalog" data-mode="apply">执行</button></div></div>
+          <div class="action-row"><div><strong>QMD 索引</strong><span id="qmd-detail">未启用</span></div><div><button class="button button-secondary action" data-action="qmd" data-mode="preview">预览</button><button class="button button-primary action" data-action="qmd" data-mode="apply">执行</button></div></div>
+          <div class="action-row"><div><strong>Restic 备份</strong><span id="backup-detail">未启用</span></div><div><button class="button button-secondary action" data-action="backup" data-mode="preview">预览</button><button class="button button-primary action" data-action="backup" data-mode="apply">执行</button></div></div>
+          <div class="action-row"><div><strong>GitHub 私有镜像</strong><span id="github-detail">未验证</span></div><div><button class="button button-secondary action" data-action="github" data-mode="preview">预览</button><button class="button button-primary action" data-action="github" data-mode="prepare">准备</button></div></div>
+        </div>
+        <pre id="action-output" class="action-output" aria-live="polite">{}</pre>
+      </section>
+    </main>
+  </div>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+schema_version: 1
+language: en
+vault: "{vault}"
+data: "{data}"
+sources: []
+skills: []
+integrations:
+  qmd:
+    enabled: false
+    collection: personal-knowledge-vault
+  restic:
+    enabled: false
+    repository: ""
+  github:
+    enabled: false
+    repository: ""
+schedule:
+  enabled: false
+  hour: 3
+  minute: 15
