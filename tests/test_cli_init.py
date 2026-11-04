@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 from personal_vault.cli import main
@@ -38,8 +39,9 @@ def test_cli_init_and_source_workflow(tmp_path: Path, capsys) -> None:
     ) == 0
 
     output = capsys.readouterr().out
-    assert '"enabled": true' in output
-    assert str(source) in output
+    records = [json.loads(line) for line in output.splitlines()]
+    assert any(record.get("enabled") is True for record in records)
+    assert any(record.get("path") == str(source) for record in records)
 
 
 def test_cli_init_dry_run_leaves_no_path(tmp_path: Path) -> None:

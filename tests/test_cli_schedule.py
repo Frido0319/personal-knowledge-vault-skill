@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from personal_vault.cli import main
@@ -13,6 +14,10 @@ def test_cli_schedule_show_is_read_only(tmp_path: Path, capsys) -> None:
     assert main(["schedule", "show", "--config", str(paths.config)]) == 0
 
     output = capsys.readouterr().out
-    assert "personal-vault-maintenance.timer" in output
+    expected = (
+        "Personal Knowledge Vault Daily Maintenance"
+        if os.name == "nt"
+        else "personal-vault-maintenance.timer"
+    )
+    assert expected in output
     assert Path(paths.config).read_bytes() == before
-

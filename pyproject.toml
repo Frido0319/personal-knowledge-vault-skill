@@ -26,6 +26,8 @@ dependencies = ["PyYAML>=6.0,<7"]
 dev = [
   "build>=1.2,<2",
   "pytest>=8,<10",
+  "setuptools>=68",
+  "wheel>=0.45,<1",
 ]
 
 [project.scripts]
@@ -45,4 +47,3 @@ personal_vault = ["web/static/*"]
 pythonpath = ["src"]
 testpaths = ["tests"]
 addopts = "--strict-markers"
-

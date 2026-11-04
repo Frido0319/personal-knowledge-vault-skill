@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import pytest
@@ -117,5 +118,5 @@ def test_config_remains_owner_only_after_source_changes(initialized: tuple[Vault
     add_source(Path(paths.config), source_id="docs", kind="documents", path=source)
 
     assert load_config(Path(paths.config))["sources"][0]["id"] == "docs"
-    if Path(paths.config).owner():
+    if os.name != "nt":
         assert Path(paths.config).stat().st_mode & 0o777 == 0o600
