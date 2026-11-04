@@ -112,7 +112,7 @@ def test_installer_previews_verified_wheel_and_rejects_tampering(tmp_path: Path)
     installer = _load_installer()
     runtime = tmp_path / "assets" / "runtime"
     runtime.mkdir(parents=True)
-    wheel = runtime / "personal_knowledge_vault-0.1.0-py3-none-any.whl"
+    wheel = runtime / "personal_knowledge_vault-0.1.1-py3-none-any.whl"
     wheel.write_bytes(b"synthetic-wheel")
     digest = hashlib.sha256(wheel.read_bytes()).hexdigest()
     (runtime / "SHA256SUMS").write_text(f"{digest}  {wheel.name}\n", encoding="utf-8")

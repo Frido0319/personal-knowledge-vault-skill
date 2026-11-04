@@ -2,6 +2,14 @@
 
 All notable changes to this project are documented here.
 
+## 0.1.1 - 2026-11-04
+
+### Fixed
+
+- Generate the release wheel with the standard library instead of environment-specific build backends.
+- Store wheel and Skill ZIP entries without compression so identical source commits are byte-for-byte reproducible across supported Python environments.
+- Validate native Windows paths, scheduler output, permissions, and release dependencies in CI.
+
 ## 0.1.0 - 2026-11-04
 
 ### Added

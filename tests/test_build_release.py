@@ -75,6 +75,24 @@ def test_release_checksums_cover_exactly_the_release_artifacts(tmp_path: Path) -
     assert report["artifacts"] == sorted(expected)
 
 
+def test_release_archives_are_backend_independent_stored_zip_files(tmp_path: Path) -> None:
+    output = tmp_path / "dist"
+    _build(output)
+    wheel = next(output.glob("*.whl"))
+    skill = next(output.glob("*.skill"))
+
+    for artifact in (wheel, skill):
+        with zipfile.ZipFile(artifact) as archive:
+            assert archive.testzip() is None
+            assert all(entry.compress_type == zipfile.ZIP_STORED for entry in archive.infolist())
+
+    with zipfile.ZipFile(wheel) as archive:
+        wheel_metadata = next(name for name in archive.namelist() if name.endswith(".dist-info/WHEEL"))
+        assert "Generator: personal-knowledge-vault deterministic builder" in archive.read(
+            wheel_metadata
+        ).decode("utf-8")
+
+
 def test_built_skill_installs_and_runs_in_a_temporary_home(tmp_path: Path) -> None:
     output = tmp_path / "dist"
     _build(output)
